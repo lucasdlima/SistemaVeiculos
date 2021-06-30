@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block titleAndNavbar %}Registrar Compra{% endblock %}
+
+{% block corpo %}
+      <div class="container mt-5">  
+        <form class="row g-3" method="POST">
+            <h3>Dados do Veículo</h3>
+            <div class="col-md-4">
+                <label for="marca" class="form-label">Marca</label>
+                <input type="text" class="form-control" name="marca" id="marca" maxlength="20" required>
+            </div>
+            <div class="col-md-4">
+                <label for="modelo" class="form-label">Modelo</label>
+                <input type="text" class="form-control" name="modelo" id="modelo" maxlength="20" required>
+            </div>
+            <div class="col-md-2">
+                <label for="anoFabricacao" class="form-label">Ano de Fabricação</label>
+                <input type="text" class="form-control" name="anoFabricacao" id="anoFabricacao" maxlength="4" placeholder="aaaa" required>
+            </div>
+            <div class="col-md-3">
+                <label for="placa" class="form-label">Placa</label>
+                <input type="text" class="form-control" name="placa" id="placa" maxlength="8" required>
+            </div>
+            <div class="col-md-2">
+                <label for="cor" class="form-label">Cor</label>
+                <input type="text" class="form-control" name="cor" id="cor" maxlength="20" required>
+            </div>
+            <div class="col-md-5">
+                <label for="chassi" class="form-label">Chassi</label>
+                <input type="text" class="form-control" name="chassi" id="chassi" maxlength="17" required>
+            </div>
+            <h3>Dados da compra</h3>
+            <div class="col-md-2">
+                <label for="dataCompra" class="form-label">Data da Compra</label>
+                <input type="date" class="form-control" name="dataCompra" id="dataCompra" required>
+            </div>
+            <div class="col-md-2">
+                <label for="valorCompra" class="form-label">Valor da Compra</label>
+                <input type="text" class="form-control" name="valorCompra" id="valorCompra" placeholder="R$" required>
+            </div>
+          <div class="col-12">
+            <button class="btn btn-primary" type="submit">Submit form</button>
+          </div>
+        </form>
+      </div>
+      
+
+{% endblock %}
