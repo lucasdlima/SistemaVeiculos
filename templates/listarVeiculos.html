@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block titleAndNavbar %}Veículos Disponíveis{% endblock %}
+{% block corpo %}
+    
+    <div class="container mt-5">
+      <h3>Veículos Disponíveis</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Marca</th>
+            <th scope="col">Modelo</th>
+            <th scope="col">Ano de Fabricação</th>
+            <th scope="col">Chassi</th>
+            <th scope="col">Data da Compra</th>
+            <th scope="col">Valor da Compra</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for v in veiculos %}
+          
+          <tr>
+            <td>{{v.id}}</td>
+            <td>{{v.marca}}</td>
+            <td>{{v.modelo}}</td>
+            <td>{{v.ano_fabricacao}}</td>
+            <td>{{v.chassi}}</td>
+            <td>{{v.data_compra}}</td>
+            <td>R$ {{v.valor_compra}}</td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+
+    </div>
+
+{% endblock %}

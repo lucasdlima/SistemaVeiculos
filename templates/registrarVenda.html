@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block titleAndNavbar %}SA Veículos{% endblock %}
+
+{% block corpo %}
+
+    <div class="container mt-5">  
+      <form class="row g-3" method="POST">
+          <h3>Dados do Veículo</h3>
+          <div class="col-md-5">
+              <label for="chassi" class="form-label">Chassi</label>
+              <input type="text" class="form-control" name="chassi" id="chassi" maxlength="17" required>
+          </div>
+          <h3>Dados da Venda</h3>
+          <div class="col-md-2">
+              <label for="dataVenda" class="form-label">Data da Venda</label>
+              <input type="date" class="form-control" name="dataVenda" id="dataVenda" placeholder="dd/mm/aaaa" required>
+          </div>
+          <div class="col-md-2">
+              <label for="valorVenda" class="form-label">Valor da Venda</label>
+              <input type="text" class="form-control" name="valorVenda" id="valorVenda" placeholder="R$" required>
+          </div>
+          <div class="col-12">
+            <button class="btn btn-primary" type="submit">Submit form</button>
+          </div>
+      </form>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block titleAndNavbar %}Relatório Mensal{% endblock %}
+
+{% block corpo %}
+  <script>
+  function myF(x, y) {
+    alert(x, y)
+  }
+  </script>
+
+    <div class="container mt-5">
+      <div class="row">
+        <div>
+          <div class="dropdown">
+            <a class="btn btn-dark dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+              Mês
+            </a>
+          
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              {% for m in meses %}
+              <li><a class="dropdown-item" id="mes" onclick="myF('{{dicionario}}, {{m}}')" href="#">{{m.data_venda.month}}/{{m.data_venda.year}}</a></li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+        <div class="col">
+          <canvas class="pie"></canvas>
+          
+        </div>
+        <div class="col">
+          coll
+        </div>
+        
+      </div>
+      
+    </div>
+    
+
+
+    
+    <!-- Chart.js JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.4.0/chart.min.js" integrity="sha512-JxJpoAvmomz0MbIgw9mx+zZJLEvC6hIgQ6NcpFhVmbK1Uh5WynnRTTSGv3BTZMNBpPbocmdSJfldgV5lVnPtIw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+    <script>
+      var ctx = document.getElementsByClassName("pie");
+
+      var chartGraph = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ["02", "8", "15", "19", "25", "30"],
+          datasets: [
+              {
+              label: "Venda",
+              data: [90, 80, 110, 95, 88, 105],
+              borderWidth: 2,
+              borderColor: 'rgba(120,50,50,0.85)',
+              backgroundColor: 'transparent',
+            },
+            {
+              label: "Comra",
+              data: [70, 75, 100, 86, 80, 100],
+              borderWidth: 2,
+              borderColor: 'rgba(6,204,6,0.85)',
+              lineTension: 0.1,
+              backgroundColor: 'transparent',
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'top',
+            },
+            title: {
+              display: true,
+              text: 'Relação Compra e Venda'
+            },
+            
+          }
+        },
+      });
+
+    </script>
+    
+{% endblock %}
