@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+
+    <title>{% block title %}{% endblock %}</title>
+  </head>
+  <body>
+    <div class="container-fluid" style="background-color: #000000;">
+      <nav class="navbar navbar-expand-xl navbar-dark">
+        <a href="/" class="navbar-brand mb-0 h1">Sistema agência de veículos</a>
+        <button 
+        class="navbar-toggler" 
+        type="button" 
+        data-bs-toggle="collapse" 
+        data-bs-target="#toogleMobileMenu" 
+        aria-controls="toggleMobileMenu" 
+        aria-expanded="false" 
+        aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="toogleMobileMenu">
+          <ul class="navbar-nav ms-auto">
+            <li>
+              <a class="nav-link" href="comprarVeiculo">Comprar veículo</a>
+            </li>
+            <li>
+              <a class="nav-link" href="registrarVenda">Registar venda</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Veículos</a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="listarVeiculos">Disponíveis</a></li>
+                <li><a class="dropdown-item" href="historicoVendas">Vendidos</a></li>
+              </ul>
+            </li>
+            <li>
+              <a class="nav-link" href="relatorioMensal">Relatório mensal</a> 
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+    
+    {% block corpo %}{% endblock %}
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+
+  </body>
+</html>
