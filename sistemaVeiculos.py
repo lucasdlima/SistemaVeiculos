@@ -1,4 +1,5 @@
 import json
+from typing import Awaitable
 from flask import Flask, render_template, request
 from flask_wtf import FlaskForm
 from wtforms_sqlalchemy.fields import QuerySelectField
@@ -74,10 +75,14 @@ def comprarVeiculo():
 
     if request.method == "POST":
         veiculo = Veiculos(request.form['marca'], request.form['modelo'], request.form['anoFabricacao'], request.form['placa'], request.form['cor'], request.form['chassi'], datetime.strptime(request.form['dataCompra'], '%Y-%m-%d').date(), request.form['valorCompra'])
-        
-        db.session.add(veiculo)
-        db.session.commit()
-        return 'Sucesso'
+        alert = ''
+        try:
+            db.session.add(veiculo)
+            db.session.commit()
+            alert = 's'
+        except:
+            alert = 'f'
+        return render_template("comprarVeiculo.html", alerta=alert)
         
     else:   
         return render_template("comprarVeiculo.html")
@@ -112,10 +117,6 @@ def registarVenda():
 
 @app.route('/relatorioMensal', methods=["GET", "POST"])
 def relatorioMensal():
-
-    """ form = Form()
-    if form.validate_on_submit():
-        return "<h1>{}</h1>".format(form.opts.data.marca) """
     
     getVeiculos = VeiculosVendidos.query.all()
     lista = []
@@ -130,12 +131,17 @@ def relatorioMensal():
         dia = []
         valorCompra = []
         valorVenda = []
+        comissao = []
         for x in reqDic:
             dia.append(x.data_venda.day)
             valorCompra.append(x.valor_compra)
             valorVenda.append(x.valor_venda)
-        return render_template("relatorioMes.html", dia=dia, valorCompra=valorCompra, valorVenda=valorVenda)
+            if (x.valor_venda - x.valor_compra) > 0:
+                comissao.append((x.valor_venda - x.valor_compra)*.1)
+        return render_template("relatorioMes.html", dia=dia, valorCompra=valorCompra, valorVenda=valorVenda, comissao=comissao)
     
+    for x in getVeiculos:
+        print(x.data_venda)
     return render_template("relatorioMensal.html", meses=meses)
 
 @app.route('/relatorioMes')

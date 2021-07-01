@@ -1,6 +1,6 @@
 def mesesUnicos(lista):
+    x = 0
     for y in range(len(lista)):
-        x = 0
         c = x + 1
         while c < (len(lista)):
             if lista[x].data_venda.month == lista[c].data_venda.month and lista[x].data_venda.year == lista[c].data_venda.year:
