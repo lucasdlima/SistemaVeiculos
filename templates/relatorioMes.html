@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block titleAndNavbar %}Relatório Mensal{% endblock %}
+
+{% block corpo %}
+
+  <script>
+    let dias = [];
+    let valor_compra = [];
+    let valor_venda = [];
+    function addData(chart, label, data) {
+        chart.data.labels.push(label);
+        chart.data.datasets.forEach((dataset) => {
+            dataset.data.push(data);
+        });
+        chart.update();
+    }
+    
+  </script>
+
+  <script>
+    {% for d in dia %}
+    if(parseInt("{{d}}")){
+      dias.push(parseInt("{{d}}"))
+    }
+    {% endfor %}
+
+    {% for vc in valorCompra %}
+    if(parseInt("{{vc}}")){
+      valor_compra.push(parseInt("{{vc}}"))
+    }
+    {% endfor %}
+    {% for vv in valorVenda %}
+    if(parseInt("{{vv}}")){
+      valor_venda.push(parseInt("{{vv}}"))
+    }
+    {% endfor %}
+
+  </script>
+
+
+  <script>
+    window.onload = function() {
+      
+  };
+  </script>
+
+  <script>
+    const labels = dias;
+    const data = {
+      labels: labels,
+      datasets: [
+        {
+        label: 'Venda',
+        backgroundColor: 'rgb(255, 99, 132)',
+        borderColor: 'rgb(255, 99, 132)',
+        data: valor_venda,
+      },
+      {
+        label: 'Compra',
+        backgroundColor: 'rgb(255, 99, 132)',
+        borderColor: 'rgb(255, 99, 132)',
+        data: valor_compra,
+      }
+    ]
+    };
+  </script>
+
+  <script>
+    const config = {
+      type: 'line',
+      data,
+      options: {}
+    };
+  </script>
+
+  <div >
+    <canvas id="myChart"></canvas>
+  </div>
+  
+    <!-- Chart.js JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.4.0/chart.min.js" integrity="sha512-JxJpoAvmomz0MbIgw9mx+zZJLEvC6hIgQ6NcpFhVmbK1Uh5WynnRTTSGv3BTZMNBpPbocmdSJfldgV5lVnPtIw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+
+    <script>
+      var myChart = new Chart(
+        document.getElementById('myChart'),
+        config
+      );
+
+    </script>
+    
+{% endblock %}
