@@ -1,12 +1,7 @@
-import json
-from typing import Awaitable
 from flask import Flask, render_template, request
-from flask_wtf import FlaskForm
-from wtforms_sqlalchemy.fields import QuerySelectField
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from sistemaVeiculos.util import mesesUnicos, gerarDict, toTuple
-from json import dumps
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
@@ -61,11 +56,6 @@ class VeiculosVendidos(db.Model):
         self.data_venda = dataV
         self.valor_venda = valorV
 
-def veiculo_query():
-    return VeiculosVendidos.query        
-class Form(FlaskForm):
-    opts = QuerySelectField(query_factory=veiculo_query, allow_blank=True)  
-
 @app.route('/')
 def hello_world():
     return render_template("index.html")
@@ -75,13 +65,12 @@ def comprarVeiculo():
 
     if request.method == "POST":
         veiculo = Veiculos(request.form['marca'], request.form['modelo'], request.form['anoFabricacao'], request.form['placa'], request.form['cor'], request.form['chassi'], datetime.strptime(request.form['dataCompra'], '%Y-%m-%d').date(), request.form['valorCompra'])
-        alert = ''
+
         try:
             db.session.add(veiculo)
             db.session.commit()
-            alert = 's'
         except:
-            alert = 'f'
+            db.rollback()
         return render_template("comprarVeiculo.html", alerta=alert)
         
     else:   
@@ -108,10 +97,8 @@ def registarVenda():
         try:
             db.session.add(veiculo)
             db.session.commit()
-            return 'Sucesso'
         except:
             db.rollback()
-            return 'Falha'
     else:
         return render_template("registrarVenda.html")   
 
@@ -144,16 +131,6 @@ def relatorioMensal():
         print(x.data_venda)
     return render_template("relatorioMensal.html", meses=meses)
 
-@app.route('/relatorioMes')
-def relatorioMes():
-    """  getVeiculos = VeiculosVendidos.query.all()
-    lista = []
-    for x in getVeiculos:
-            lista.append(x)
-    
-    meses = mesesUnicos(lista) 
-    dicionario = gerarDict(meses, getVeiculos) """
-    return render_template("relatorioMensal.html")
    
 
     

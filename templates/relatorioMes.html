@@ -122,15 +122,9 @@
             text: 'Relação Compra Venda'
           },
           legend: {
-            position: 'bottom'
+            position: 'right'
           },
         },
-        scales: {
-          y: {
-            min: 1000,
-            max: 200000,
-          }
-        }
       },
     };
     const configBar = {
@@ -168,19 +162,23 @@
   </script>
 
   <div class="container mt-5">
-    <div class="row g-4 ">
+    <div class="row">
       <div class="col-md-6">
-        <h3>Valores Totais, Compra e Venda</h3>
+        <h3 class="text-center">Valores Totais, Compra e Venda</h3>
         <canvas id="lucroChart"></canvas>
       </div>
       <div class="col-md-6">
-        <h3>Lucro/Prejuízo e Total pago em Comissões</h3>
+        <h3 class="text-center">Lucro/Prejuízo e Total pago em Comissões</h3>
         <canvas id="lupreju"></canvas>
       </div>
-      <div class="col-md-12 ">
+    </div>
+  </div>
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col 12">
         <canvas id="myChart"></canvas>
+        <h3 class="text-center">Preço de compra e de venda de cada veículo vendido neste mês</h3>
       </div>
-
 
     </div>
   </div>
