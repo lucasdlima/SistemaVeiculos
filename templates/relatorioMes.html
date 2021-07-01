@@ -7,14 +7,9 @@
     let dias = [];
     let valor_compra = [];
     let valor_venda = [];
-    function addData(chart, label, data) {
-        chart.data.labels.push(label);
-        chart.data.datasets.forEach((dataset) => {
-            dataset.data.push(data);
-        });
-        chart.update();
-    }
-    
+    let comissoes = [];
+    let lupreju = [];
+    let luprejuCom = [];
   </script>
 
   <script>
@@ -34,14 +29,34 @@
       valor_venda.push(parseInt("{{vv}}"))
     }
     {% endfor %}
+    {% for c in comissao %}
+    if(parseInt("{{c}}")){
+      comissoes.push(parseInt("{{c}}"))
+    }
+    {% endfor %}
 
-  </script>
+    if((valor_venda.reduce((a, b) => a + b) - valor_compra.reduce((a, b) => a + b)) > 0){
+      lupreju = [
+        'Lucro',
+        'Comissões'
+      ]
 
+      luprejuCom = [
+      (valor_venda.reduce((a, b) => a + b) - valor_compra.reduce((a, b) => a + b) - comissoes.reduce((a, b) => a + b)),
+      comissoes.reduce((a, b) => a + b)
+      ]
+    }else{
+      lupreju = [
+        'Prejuízo',
+        'Comissões'
+      ]
 
-  <script>
-    window.onload = function() {
-      
-  };
+      luprejuCom = [
+      (valor_venda.reduce((a, b) => a + b) - valor_compra.reduce((a, b) => a + b) - comissoes.reduce((a, b) => a + b))*(-1),
+      comissoes.reduce((a, b) => a + b)
+      ]
+    }  
+
   </script>
 
   <script>
@@ -51,15 +66,45 @@
       datasets: [
         {
         label: 'Venda',
-        backgroundColor: 'rgb(255, 99, 132)',
-        borderColor: 'rgb(255, 99, 132)',
+        backgroundColor: 'rgb(67, 217, 147)',
+        borderColor: 'rgb(67, 217, 147)',
         data: valor_venda,
       },
       {
         label: 'Compra',
-        backgroundColor: 'rgb(255, 99, 132)',
-        borderColor: 'rgb(255, 99, 132)',
+        backgroundColor: 'rgb(217, 67, 67)',
+        borderColor: 'rgb(217, 67, 67)',
         data: valor_compra,
+      }
+    ]
+    };
+    
+
+    const dataBar = {
+      labels: [
+        'Total Compra',
+        'Total Venda'
+      ],
+      datasets: [
+        {
+        data: [valor_compra.reduce((a, b) => a + b), valor_venda.reduce((a, b) => a + b)],
+        backgroundColor: [
+          'rgb(217, 67, 67)',
+          'rgb(67, 217, 147)'
+        ],
+      }
+    ]
+    };
+
+    const dataPie = {
+      labels: lupreju,
+      datasets: [
+        {
+        data: luprejuCom,
+        backgroundColor: [
+          'rgb(67, 217, 147)',
+          'rgb(217, 67, 67)'
+        ],
       }
     ]
     };
@@ -69,22 +114,92 @@
     const config = {
       type: 'line',
       data,
-      options: {}
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: 'Relação Compra Venda'
+          },
+          legend: {
+            position: 'bottom'
+          },
+        },
+        scales: {
+          y: {
+            min: 1000,
+            max: 200000,
+          }
+        }
+      },
+    };
+    const configBar = {
+      type: 'pie',
+      data: dataBar,
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: 'BRL R$'
+          },
+          legend: {
+            position: 'bottom'
+          },
+        },
+      },
+    };
+    const configPie = {
+      type: 'pie',
+      data: dataPie,
+      options: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: 'BRL R$'
+          },
+          legend: {
+            position: 'bottom'
+          },
+        },
+      },
     };
   </script>
 
-  <div >
-    <canvas id="myChart"></canvas>
+  <div class="container mt-5">
+    <div class="row g-4 ">
+      <div class="col-md-6">
+        <h3>Valores Totais, Compra e Venda</h3>
+        <canvas id="lucroChart"></canvas>
+      </div>
+      <div class="col-md-6">
+        <h3>Lucro/Prejuízo e Total pago em Comissões</h3>
+        <canvas id="lupreju"></canvas>
+      </div>
+      <div class="col-md-12 ">
+        <canvas id="myChart"></canvas>
+      </div>
+
+
+    </div>
   </div>
   
     <!-- Chart.js JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.4.0/chart.min.js" integrity="sha512-JxJpoAvmomz0MbIgw9mx+zZJLEvC6hIgQ6NcpFhVmbK1Uh5WynnRTTSGv3BTZMNBpPbocmdSJfldgV5lVnPtIw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     
-
     <script>
       var myChart = new Chart(
         document.getElementById('myChart'),
         config
+      );
+      var lucroChart = new Chart(
+        document.getElementById('lucroChart'),
+        configBar
+      );
+      var lucroChart = new Chart(
+        document.getElementById('lupreju'),
+        configPie
       );
 
     </script>

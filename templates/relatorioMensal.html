@@ -2,14 +2,20 @@
 {% block titleAndNavbar %}Relatório Mensal{% endblock %}
 
 {% block corpo %}
+    <div class="container mt-5">
+      
+      <form action="/relatorioMensal" method="POST" class="row g-4">
+        <div class="col-md-12">
+          <select select class="form-select" name="mes" id="mes">
+            {% for m in meses %}
+            <option value="{{m.data_venda.month, m.data_venda.year}}">{{m.data_venda.month}}/{{m.data_venda.year}}</option>
+            {% endfor %}
+          </select>
+        </div>
 
-      <form action="/relatorioMensal" method="POST">
-        <select name="mes" id="mes">
-          {% for m in meses %}
-          <option value="{{m.data_venda.month, m.data_venda.year}}">{{m.data_venda.month}}/{{m.data_venda.year}}</option>
-          {% endfor %}
-        </select>
-        <input type="submit">
+        <div class="d-grid gap-2">
+          <button class="btn btn-dark" type="submit">Confirmar</button>
+        </div>
       </form>
-    
+    </div>
 {% endblock %}
