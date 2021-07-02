@@ -5,6 +5,7 @@ def mesesUnicos(lista):
         while c < (len(lista)):
             if lista[x].data_venda.month == lista[c].data_venda.month and lista[x].data_venda.year == lista[c].data_venda.year:
                 lista.remove(lista[x])
+                c -= 1
             c += 1
         x += 1
     return lista

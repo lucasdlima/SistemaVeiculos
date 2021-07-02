@@ -50,11 +50,17 @@
         'Prejuízo',
         'Comissões'
       ]
-
-      luprejuCom = [
-      (valor_venda.reduce((a, b) => a + b) - valor_compra.reduce((a, b) => a + b) - comissoes.reduce((a, b) => a + b))*(-1),
-      comissoes.reduce((a, b) => a + b)
-      ]
+      try {
+        luprejuCom = [
+        (valor_venda.reduce((a, b) => a + b) - valor_compra.reduce((a, b) => a + b) - comissoes.reduce((a, b) => a + b))*(-1),
+        comissoes.reduce((a, b) => a + b)
+        ]
+      } catch (error) {
+        luprejuCom = [
+        (valor_venda.reduce((a, b) => a + b) - valor_compra.reduce((a, b) => a + b)), 0 
+        ]
+      }
+      
     }  
 
   </script>

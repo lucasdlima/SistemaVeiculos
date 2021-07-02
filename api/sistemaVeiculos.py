@@ -62,19 +62,21 @@ def hello_world():
 
 @app.route('/comprarVeiculo', methods=["GET", "POST"])
 def comprarVeiculo():
-
+    mensagem = ''
     if request.method == "POST":
         veiculo = Veiculos(request.form['marca'], request.form['modelo'], request.form['anoFabricacao'], request.form['placa'], request.form['cor'], request.form['chassi'], datetime.strptime(request.form['dataCompra'], '%Y-%m-%d').date(), request.form['valorCompra'])
 
         try:
             db.session.add(veiculo)
             db.session.commit()
+            mensagem = 'Veículo cadastrado com sucesso! Você pode conferi-lo na sessão Veículos : Disponíveis.'
         except:
-            db.rollback()
-        return render_template("comprarVeiculo.html", alerta=alert)
+            mensagem = 'FALHA! não foi possível cadastrar o veículo, verifique os dados e tente novamente.'
+        return render_template("comprarVeiculo.html", mensagem=mensagem)
         
-    else:   
-        return render_template("comprarVeiculo.html")
+    else:
+        mensagem = 'Bem Vindo! Aqui você pode registar a compra de um veículo!'   
+        return render_template("comprarVeiculo.html", mensagem=mensagem)
     
 
 @app.route('/historicoVendas')
@@ -89,18 +91,24 @@ def listarVeiculos():
 
 @app.route('/registrarVenda', methods=["GET", "POST"])
 def registarVenda():
+    mensagem = ''
     if request.method == "POST":
-        getVeiculo = Veiculos.query.filter_by(chassi=request.form['chassi']).first()
-        veiculo = VeiculosVendidos(getVeiculo.marca, getVeiculo.modelo, getVeiculo.ano_fabricacao, getVeiculo.placa, getVeiculo.cor, getVeiculo.chassi, getVeiculo.data_compra, getVeiculo.valor_compra, datetime.strptime(request.form['dataVenda'], '%Y-%m-%d').date(), request.form['valorVenda'])
-        db.session.delete(getVeiculo)
-        db.session.commit()
+
         try:
+            getVeiculo = Veiculos.query.filter_by(chassi=request.form['chassi']).first()
+            veiculo = VeiculosVendidos(getVeiculo.marca, getVeiculo.modelo, getVeiculo.ano_fabricacao, getVeiculo.placa, getVeiculo.cor, getVeiculo.chassi, getVeiculo.data_compra, getVeiculo.valor_compra, datetime.strptime(request.form['dataVenda'], '%Y-%m-%d').date(), request.form['valorVenda'])    
+
+            db.session.delete(getVeiculo)
+            db.session.commit()
             db.session.add(veiculo)
             db.session.commit()
+            mensagem = 'Veículo vendido com sucesso! Você pode conferi-lo na sessão Veículos : Vendidos.'
         except:
-            db.rollback()
+            mensagem = 'FALHA! não foi possível encontrar o veículo, verifique os dados e tente novamente.'
+        return render_template("registrarVenda.html", mensagem=mensagem)
     else:
-        return render_template("registrarVenda.html")   
+        mensagem = 'Bem Vindo! Aqui você pode registar a venda de um veículo!'  
+        return render_template("registrarVenda.html", mensagem=mensagem)   
 
 @app.route('/relatorioMensal', methods=["GET", "POST"])
 def relatorioMensal():
@@ -108,9 +116,9 @@ def relatorioMensal():
     getVeiculos = VeiculosVendidos.query.all()
     lista = []
     for x in getVeiculos:
-            lista.append(x)
-    
+        lista.append(x)
     meses = mesesUnicos(lista)
+
     if request.method == "POST":
         dicionario = gerarDict(meses, getVeiculos)
         req = toTuple(request.form['mes'])
@@ -126,6 +134,9 @@ def relatorioMensal():
             if (x.valor_venda - x.valor_compra) > 0:
                 comissao.append((x.valor_venda - x.valor_compra)*.1)
         return render_template("relatorioMes.html", dia=dia, valorCompra=valorCompra, valorVenda=valorVenda, comissao=comissao)
+    
+    for x in getVeiculos:
+        print(x.data_venda)
     return render_template("relatorioMensal.html", meses=meses)
 
 if __name__ == '__main__':
