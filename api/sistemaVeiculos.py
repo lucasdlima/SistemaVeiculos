@@ -117,6 +117,7 @@ def relatorioMensal():
     lista = []
     for x in getVeiculos:
         lista.append(x)
+        
     meses = mesesUnicos(lista)
 
     if request.method == "POST":
@@ -135,8 +136,6 @@ def relatorioMensal():
                 comissao.append((x.valor_venda - x.valor_compra)*.1)
         return render_template("relatorioMes.html", dia=dia, valorCompra=valorCompra, valorVenda=valorVenda, comissao=comissao)
     
-    for x in getVeiculos:
-        print(x.data_venda)
     return render_template("relatorioMensal.html", meses=meses)
 
 if __name__ == '__main__':
