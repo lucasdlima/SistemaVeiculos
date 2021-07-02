@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-from sistemaVeiculos.util import mesesUnicos, gerarDict, toTuple
+from util import mesesUnicos, gerarDict, toTuple
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
@@ -126,11 +126,10 @@ def relatorioMensal():
             if (x.valor_venda - x.valor_compra) > 0:
                 comissao.append((x.valor_venda - x.valor_compra)*.1)
         return render_template("relatorioMes.html", dia=dia, valorCompra=valorCompra, valorVenda=valorVenda, comissao=comissao)
-    
-    for x in getVeiculos:
-        print(x.data_venda)
     return render_template("relatorioMensal.html", meses=meses)
 
+if __name__ == '__main__':
+    app.run(debug=True)
    
 
     
